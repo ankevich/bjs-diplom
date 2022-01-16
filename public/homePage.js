@@ -74,10 +74,24 @@ moneyManager.sendMoneyCallback = (data) => {
 // Начальный список избранного
 ApiConnector.getFavorites((response) => {
   if (response.success == true) {
-    ratesBoard.clearTable();
-    ratesBoard.fillTable(response.data);
+    favoritesWidget.clearTable();
+    favoritesWidget.fillTable(response.data);
     moneyManager.updateUsersList(response.data);
   }
 });
 
+// Добавление пользователя в список избранного
+favoritesWidget.addUserCallback = (data) => {
+  ApiConnector.addUserToFavorites(data, (response) => {
+    if (response.success == true) {
+      favoritesWidget.clearTable();
+      favoritesWidget.fillTable(response.data);
+      moneyManager.updateUsersList(response.data);
+      favoritesWidget.setMessage(true, "Пользователь добавлен");
+    } else {
+      favoritesWidget.setMessage(false, response.error);
+    }
+  });
+};
 
+// Удаление пользователя
