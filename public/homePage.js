@@ -95,3 +95,15 @@ favoritesWidget.addUserCallback = (data) => {
 };
 
 // Удаление пользователя
+favoritesWidget.removeUserCallback = (id) => {
+  ApiConnector.removeUserFromFavorites(id, (response) => {
+    if (response.success == true) {
+      favoritesWidget.clearTable();
+      favoritesWidget.fillTable(response.data);
+      moneyManager.updateUsersList(response.data);
+      favoritesWidget.setMessage(true, "Пользователь удалён");
+    } else {
+      favoritesWidget.setMessage(false, response.error);
+    }
+  });
+};
