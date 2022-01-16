@@ -8,3 +8,9 @@ logoutButton.action = () => {
 
   ApiConnector.logout(logoutHandler);
 };
+
+ApiConnector.current((response) => {
+  if (response.success == true) {
+    ProfileWidget.showProfile(response.data);
+  }
+});
