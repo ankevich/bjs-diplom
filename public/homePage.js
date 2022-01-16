@@ -30,3 +30,17 @@ let getStocks = () => {
 
 getStocks();
 setInterval(getStocks, 60000);
+
+//Операции с деньгами
+let moneyManager = new MoneyManager();
+let favoritesWidget = new FavoritesWidget()
+
+moneyManager.addMoneyCallback = (data) => {
+  ApiConnector.addMoney(data, (response) => {
+    if (response.success == true) {
+        ProfileWidget.showProfile(response.data);
+    } else {
+        favoritesWidget.setMessage(false, response.error)
+    }
+  });
+};
