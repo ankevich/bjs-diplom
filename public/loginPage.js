@@ -7,6 +7,8 @@ userForm.loginFormCallback = (data) => {
 
 let responseHandler = (response) => {
   if (response.success == true) {
-    location.reload();
+    location.reload()
+  } else {
+    userForm.setLoginErrorMessage(response.error)
   }
 };
