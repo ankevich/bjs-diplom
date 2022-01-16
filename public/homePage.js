@@ -31,16 +31,31 @@ let getStocks = () => {
 getStocks();
 setInterval(getStocks, 60000);
 
-//Операции с деньгами
+// Операции с деньгами
+
+// Пополнение баланса
 let moneyManager = new MoneyManager();
-let favoritesWidget = new FavoritesWidget()
+let favoritesWidget = new FavoritesWidget();
 
 moneyManager.addMoneyCallback = (data) => {
   ApiConnector.addMoney(data, (response) => {
     if (response.success == true) {
-        ProfileWidget.showProfile(response.data);
+      ProfileWidget.showProfile(response.data);
     } else {
-        favoritesWidget.setMessage(false, response.error)
+      favoritesWidget.setMessage(false, response.error);
     }
   });
 };
+
+// Конвертация валют
+moneyManager.conversionMoneyCallback = (data) => {
+  ApiConnector.convertMoney(data, (response) => {
+    if (response.success == true) {
+        ProfileWidget.showProfile(response.data);
+      } else {
+        favoritesWidget.setMessage(false, response.error);
+      }  
+  });
+};
+
+
