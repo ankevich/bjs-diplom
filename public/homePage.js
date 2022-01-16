@@ -1,5 +1,9 @@
+let moneyManager = new MoneyManager();
+let favoritesWidget = new FavoritesWidget();
+
 // Кнопка выхода
 let logoutButton = new LogoutButton();
+
 logoutButton.action = () => {
   let logoutHandler = (response) => {
     if (response.success == true) {
@@ -34,9 +38,6 @@ setInterval(getStocks, 60000);
 // Операции с деньгами
 
 // Пополнение баланса
-let moneyManager = new MoneyManager();
-let favoritesWidget = new FavoritesWidget();
-
 moneyManager.addMoneyCallback = (data) => {
   ApiConnector.addMoney(data, (response) => {
     if (response.success == true) {
@@ -51,11 +52,32 @@ moneyManager.addMoneyCallback = (data) => {
 moneyManager.conversionMoneyCallback = (data) => {
   ApiConnector.convertMoney(data, (response) => {
     if (response.success == true) {
-        ProfileWidget.showProfile(response.data);
-      } else {
-        favoritesWidget.setMessage(false, response.error);
-      }  
+      ProfileWidget.showProfile(response.data);
+    } else {
+      favoritesWidget.setMessage(false, response.error);
+    }
   });
 };
+
+// Перевод бабла
+moneyManager.sendMoneyCallback = (data) => {
+  ApiConnector.transferMoney(data, (response) => {
+    if (response.success == true) {
+      ProfileWidget.showProfile(response.data);
+    } else {
+      favoritesWidget.setMessage(false, response.error);
+    }
+  });
+};
+
+// Работа с избранным
+// Начальный список избранного
+ApiConnector.getFavorites((response) => {
+  if (response.success == true) {
+    ratesBoard.clearTable();
+    ratesBoard.fillTable(response.data);
+    moneyManager.updateUsersList(response.data);
+  }
+});
 
 
